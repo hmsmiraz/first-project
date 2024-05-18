@@ -11,6 +11,11 @@ const createStudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Something is missing or invalid, check and try again",
+      error: err,
+    })
     console.log(err);
   }
 };
