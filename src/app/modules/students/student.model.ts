@@ -1,15 +1,9 @@
 import { Schema, model, connect } from 'mongoose';
-import {
-  TGuardian,
-  TLocalGuardian,
-  TStudent,
-  StudentModel,
-  TUserName,
-} from './students/student.interface';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import { config } from 'dotenv';
 import { boolean } from 'joi';
+import { StudentModel, TGuardian, TLocalGuardian, TStudent, TUserName } from './student.interface';
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
