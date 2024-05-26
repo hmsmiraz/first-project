@@ -5,14 +5,9 @@ import { TUser } from './user.interface';
 import { User } from './user.model';
 
 const createStudentIntoDB = async (password: string, studentData: TStudent) => {
-  // if (await Student.isUserExists(studentData.id)) {
-  //   throw new Error('User Already Exists');
-  // }
-  //   create  a user object
   const userData: Partial<TUser> = {};
-  //if password is not given , use default password
   userData.password = password || (config.default_password as string);
-  //   set student role
+
   userData.role = 'student';
 
   userData.id = '2030100001';
