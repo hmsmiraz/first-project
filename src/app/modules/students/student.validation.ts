@@ -41,7 +41,7 @@ export const createStudentValidationSchema = z.object({
             'Gender is not valid. The exact gender is required: Male/Female/Other',
         }),
       }),
-      dateOfBirth: z.string().optional(),
+      dateOfBirth: z.date().optional(),
       email: z
         .string()
         .email('Email is not valid')
