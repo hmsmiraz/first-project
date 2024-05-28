@@ -41,7 +41,7 @@ export const createStudentValidationSchema = z.object({
             'Gender is not valid. The exact gender is required: Male/Female/Other',
         }),
       }),
-      dateOfBirth: z.date().optional(),
+      dateOfBirth: z.string().optional(),
       email: z
         .string()
         .email('Email is not valid')
@@ -57,6 +57,7 @@ export const createStudentValidationSchema = z.object({
       permanentAddress: z.string().nonempty('Permanent Address is required'),
       guardian: guardianValidationSchema,
       localGuardian: localGuardianValidationSchema,
+      admissionSemester: z.string(),
       profileImage: z.string().optional(),
     }),
   }),
