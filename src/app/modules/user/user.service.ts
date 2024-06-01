@@ -20,7 +20,10 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     payload.admissionSemester,
   );
   // create session
-
+  // for admission semester type error in line 31 (line 24-26)
+  if (!admissionSemester) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Admission semester not found');
+  }
   const session = await mongoose.startSession();
 
   try {
