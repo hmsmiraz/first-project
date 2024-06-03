@@ -6,7 +6,6 @@ import {
   TStudent,
   TUserName,
 } from './student.interface';
-import config from '../../config';
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {

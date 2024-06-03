@@ -5,15 +5,26 @@ import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 import { User } from '../user/user.model';
 
-const getAllStudentFromDB = async () => {
-  const result = await Student.find()
-    .populate('admissionSemester')
-    .populate({
-      path: 'academicDepartment',
-      populate: {
-        path: 'academicFaculty',
-      },
-    });
+const getAllStudentFromDB = async (query: Record<string, unknown>) => {
+  let searchTerm = ''; // SET DEFAULT VALUE
+
+  // IF searchTerm  IS GIVEN SET IT
+  if (query?.searchTerm) {
+    searchTerm = query?.searchTerm as string;
+  }
+
+  const result = await Student.find({
+    $or: ['email', 'name.firstName'].map((field) => ({
+      [field]: { $regex: searchTerm, $options: 'i' },
+    })),
+  });
+  // .populate('admissionSemester')
+  // .populate({
+  //   path: 'academicDepartment',
+  //   populate: {
+  //     path: 'academicFaculty',
+  //   },
+  // });
   return result;
 };
 const getSingleStudentFromDB = async (id: string) => {
