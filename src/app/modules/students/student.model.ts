@@ -122,7 +122,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     },
     admissionSemester: {
       type: Schema.Types.ObjectId,
-      ref: 'AcademicSemester:',
+      ref: 'AcademicSemester',
     },
 
     profileImage: { type: String },

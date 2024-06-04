@@ -6,18 +6,24 @@ import httpStatus from 'http-status';
 import { User } from '../user/user.model';
 
 const getAllStudentFromDB = async (query: Record<string, unknown>) => {
-  let searchTerm = ''; // SET DEFAULT VALUE
-
-  // IF searchTerm  IS GIVEN SET IT
+  const queryObj = { ...query };
+  const studentSearchableFields = ['email', 'name.firstName'];
+  let searchTerm = ''; //  DEFAULT VALUE
   if (query?.searchTerm) {
     searchTerm = query?.searchTerm as string;
   }
-
-  const result = await Student.find({
-    $or: ['email', 'name.firstName'].map((field) => ({
+  const searchQuery = Student.find({
+    $or: studentSearchableFields.map((field) => ({
       [field]: { $regex: searchTerm, $options: 'i' },
     })),
   });
+
+  // filtering
+  const excludeFields = ['searchTerm', 'sort'];
+  excludeFields.forEach((el) => delete queryObj[el]);
+
+  const filterQuery = await searchQuery.find(queryObj)
+  console.log('filterQuery=',filterQuery)
   // .populate('admissionSemester')
   // .populate({
   //   path: 'academicDepartment',
@@ -25,7 +31,16 @@ const getAllStudentFromDB = async (query: Record<string, unknown>) => {
   //     path: 'academicFaculty',
   //   },
   // });
-  return result;
+  // let sort = '-createdAt';
+
+  // if (query?.sort) {
+  //   sort = query.sort as string;
+  // }
+
+  // const sortQuery = filterQuery.sort(sort);
+
+  // const result = await Student.aggregate([{ $match: { id: id } }]);
+  return filterQuery;
 };
 const getSingleStudentFromDB = async (id: string) => {
   const result = await Student.findOne({ id })
@@ -36,7 +51,6 @@ const getSingleStudentFromDB = async (id: string) => {
         path: 'academicFaculty',
       },
     });
-  // const result = await Student.aggregate([{ $match: { id: id } }]);
   return result;
 };
 const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
