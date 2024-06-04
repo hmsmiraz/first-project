@@ -141,9 +141,15 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     },
   },
 );
-// virtuals
+// virtual
+// studentSchema.virtual('fullName').get(function () {
+//   return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName} `;
+// });
 studentSchema.virtual('fullName').get(function () {
-  return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName} `;
+  const result: any =
+    this?.name?.firstName + this?.name?.middleName + this?.name?.lastName;
+  console.log(result);
+  return result;
 });
 
 // Query middleware
