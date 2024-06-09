@@ -6,6 +6,7 @@ import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 import { AcademicSemester } from '../academicSemester/academicSemester.model';
 import QueryBuilder from '../../builder/QueryBuilder';
+import { OfferedCourse } from '../OfferedCourse/OfferedCourse.model';
 
 const createSemesterRegistrationIntoDB = async (
   payload: TSemesterRegistration,
@@ -181,21 +182,21 @@ const deleteSemesterRegistrationFromDB = async (id: string) => {
   try {
     session.startTransaction();
 
-    // const deletedOfferedCourse = await OfferedCourse.deleteMany(
-    //   {
-    //     semesterRegistration: id,
-    //   },
-    //   {
-    //     session,
-    //   },
-    // );
+    const deletedOfferedCourse = await OfferedCourse.deleteMany(
+      {
+        semesterRegistration: id,
+      },
+      {
+        session,
+      },
+    );
 
-    // if (!deletedOfferedCourse) {
-    //   throw new AppError(
-    //     httpStatus.BAD_REQUEST,
-    //     'Failed to delete semester registration !',
-    //   );
-    // }
+    if (!deletedOfferedCourse) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        'Failed to delete semester registration !',
+      );
+    }
 
     const deletedSemesterRegistration =
       await SemesterRegistration.findByIdAndDelete(id, {
