@@ -5,6 +5,7 @@ import { User } from '../user/user.model';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 import config from '../../config';
+import { createToken } from './auth.utils';
 
 
 const loginUser = async (payload: TLoginUser) => {
