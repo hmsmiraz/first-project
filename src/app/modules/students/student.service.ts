@@ -10,6 +10,7 @@ import { studentSearchableFields } from './student.constant';
 const getAllStudentFromDB = async (query: Record<string, unknown>) => {
   const studentQuery = new QueryBuilder(
     Student.find()
+      .populate('user')
       .populate('admissionSemester')
       .populate({
         path: 'academicDepartment',
@@ -17,7 +18,7 @@ const getAllStudentFromDB = async (query: Record<string, unknown>) => {
           path: 'academicFaculty',
         },
       }),
-    query,
+    query
   )
     .search(studentSearchableFields)
     .filter()
@@ -91,7 +92,7 @@ const deleteStudentFromDB = async (id: string) => {
       { isDeleted: true },
       { new: true, session },
     );
-    
+
     if (!deletedUser) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete User');
     }
